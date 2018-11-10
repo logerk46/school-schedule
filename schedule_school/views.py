@@ -10,14 +10,18 @@ def print_schedule(s):
 
 def list(request):
 	if('class_name' in request.GET):
-		schedule_list = {}
+		schedule_list = []
 		rclass = request.GET['class_name']
 		classn = models.Class_Name.objects.all().filter(name=rclass)
 		classn = models.Class_Name.objects.all().filter(name=rclass)
 		for day_id in range(1, 6):
 			Schedule = models.Schedule.objects.all().filter(id_day=day_id, id_class=classn[0].id)
-			schedule_list.append(Sc
-		return HttpResponse(schedule_list[0][4].lesson_number)
+			days = {}
+			days['day_id'] = day_id
+			days['schedule'] = Schedule
+			schedule_list.append(days)
+		return HttpResponse(schedule_list)
+			
 		# return HttpResponse([print_schedule(s) for s in Schedule])
 	else:
 		return HttpResponse(f"Not enough parametrs")
