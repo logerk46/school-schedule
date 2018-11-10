@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 
 from . import models
 
@@ -23,7 +24,7 @@ def list(request):
             days['schedule'] = Schedule
             schedule_list.append(days)
         return render(request, 'schedule_school/index.html', {'schedule': schedule_list})
-            
+
         # return HttpResponse([print_schedule(s) for s in Schedule])
     else:
         return HttpResponse(f"Not enough parametrs")
@@ -32,7 +33,7 @@ def list(request):
 @csrf_exempt
 def add(request):
 
-    if request.method == 'POST':
+    if request.method == 'GET':
         fields = ('room_number', 'id_teacher', 'id_class', 'id_subject',
                   'id_day', 'lesson_number')
         fields = (room_number, id_teacher, id_class, id_subject, id_day,
@@ -44,11 +45,18 @@ def add(request):
             id_class = models.Class_Name.objects.filter(name=id_class)
             id_subject = models.Subject.objects.filter(name=id_subject)
             id_day = models.Day.objects.filter(name=id_day)
+            if not all([teacher, id_class, id_subject, id_day]):
+                return HttpResponse("not found")
             s = models.Schedule(room_number=room_number,
-                                id_teacher=teacher,
-                                id_class=id_class,
-                                id_subject=id_subject,
-                                id_day=id_day,
+                                id_teacher=teacher[0],
+                                id_class=id_class[0],
+                                id_subject=id_subject[0],
+                                id_day=id_day[0],
                                 lesson_number=lesson_number)
             s.save()
             return HttpResponse("ok")
+
+
+def add_form(request):
+    if request.method == 'GET':
+        return render(request, 'schedule_school/add.html')
