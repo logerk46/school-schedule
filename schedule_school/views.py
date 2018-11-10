@@ -6,11 +6,6 @@ from django.shortcuts import render
 from . import models
 
 # Create your views here.
-
-def print_schedule(s):
-    return (f"[{s.room_number} {s.id_teacher} {s.id_class} {s.id_subject} "
-            f"{s.id_day} {s.lesson_number}]")
-
 def list(request):
     if('class_name' in request.GET):
         schedule_list = []
@@ -23,8 +18,8 @@ def list(request):
             days['day_id'] = day_id
             days['schedule'] = Schedule
             schedule_list.append(days)
-        return render(request, 'schedule_school/index.html', {'schedule': schedule_list})
-
+        return render(request, 'schedule_school/index.html', {'schedule_list': schedule_list, 'class_name': classn[0]})
+            
         # return HttpResponse([print_schedule(s) for s in Schedule])
     else:
         return HttpResponse(f"Not enough parametrs")

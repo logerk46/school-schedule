@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Schedule</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  {% block content %}
+	<h1>school schedule {{class_name}} </h1>
+<table class="table">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">Monday</th>
+      <th scope="col">Tuesday</th>
+      <th scope="col">Wednesday</th>
+      <th scope="col">Thursday</th>
+      <th scope="col">Friday</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for schedule in schedule_list %}
+  	<tr>
+  		{% for day_schedule in  schedule.schedule %}
+  		<td class="text-center">
+			{{ day_schedule.id_subject}}<br>
+			{{ day_schedule.id_teacher}}
+		</td>
+			{% endfor %}
+  	</tr>
+	</tbody>
+	{% endfor %}
+</table>
+<a href="/schedule/add_form/">Добавить расписание</a>
+{% endblock %}
+</div>
+</body>
+</html>
