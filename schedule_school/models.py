@@ -23,7 +23,7 @@ class Subject(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.TextField(max_length=255)
 
-class Days(models.Model):
+class Day(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.TextField(max_length=255)
 
