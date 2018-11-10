@@ -11,15 +11,23 @@ def print_schedule(s):
             f"{s.id_day} {s.lesson_number}]")
 
 def list(request):
+    if('class_name' in request.GET):
+        schedule_list = []
+        rclass = request.GET['class_name']
+        classn = models.Class_Name.objects.all().filter(name=rclass)
+        classn = models.Class_Name.objects.all().filter(name=rclass)
+        for day_id in range(1, 6):
+            Schedule = models.Schedule.objects.all().filter(id_day=day_id, id_class=classn[0].id)
+            days = {}
+            days['day_id'] = day_id
+            days['schedule'] = Schedule
+            schedule_list.append(days)
+        return render(request, 'schedule_school/index.html', {'schedule': schedule_list})
+            
+        # return HttpResponse([print_schedule(s) for s in Schedule])
+    else:
+        return HttpResponse(f"Not enough parametrs")
 
-	if('day' in request.GET and 'class_name' in request.GET):
-		rday = request.GET['day']
-		rclass = request.GET['class_name']
-		classn = models.Class_Name.objects.all().filter(name=rclass)
-		Schedule = models.Schedule.objects.all().filter(id_day=rday)
-		return HttpResponse([print_schedule(s) for s in Schedule])
-	else:
-		return HttpResponse(f"Not enough parametrs")
 
 @csrf_exempt
 def add(request):
